@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>محول الأعداد الثنائية والعشرية</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>محول الأعداد الثنائية والعشرية</h1>
+    <select id="conversionType">
+        <option value="binaryToDecimal">ثنائي إلى عشري</option>
+        <option value="decimalToBinary">عشري إلى ثنائي</option>
+    </select>
+    <label for="numberInput">أدخل العدد:</label>
+    <input type="text" id="numberInput">
+    <button id="convertButton">تحويل</button>
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#convertButton').click(function() {
+                const numberInput = $('#numberInput').val();
+                const conversionType = $('#conversionType').val();
+                const resultElement = $('#result');
+
+                if (conversionType === 'binaryToDecimal') {
+                    // التحويل من ثنائي إلى عشري
+                    if (!/^[1][01]*$/.test(numberInput)) {
+                        resultElement.text('الرجاء إدخال عدد ثنائي صحيح يبدأ بالرقم 1');
+                        return;
+                    }
+
+                    // شرح خطوات التحويل:
+                    // 1. قلب الرقم الثنائي
+                    // 2. ضرب كل رقم في قوته المناظرة لـ 2
+                    // 3. جمع النواتج
+
+                    let decimalResult = 0;
+                    let power = 0;
+                    let table = "<table><tr><th>الرقم الثنائي</th><th>القوة</th><th>النتيجة</th><th>المجموع الجزئي</th></tr>";
+                    for (let i = numberInput.length - 1; i >= 0; i--) {
+                        let digitValue = parseInt(numberInput[i]);
+                        let result = digitValue * Math.pow(2, power);
+                        decimalResult += result;
+                        table += `<tr><td>${numberInput[i]}</td><td>${power}</td><td>${digitValue} * 2^${power} = ${result}</td><td>${decimalResult}</td></tr>`;
+                        power++;
+                    }
+                    table += "</table>";
+                    resultElement.html(table);
+
+                    resultElement.append(`<p>العدد العشري المقابل هو: ${decimalResult}</p>`);
+                } else if (conversionType === 'decimalToBinary') {
+                    // التحويل من عشري إلى ثنائي
+                    // ... (الكود الحالي)
+                }
+            });
+        });
+    </script>
+</body>
+</html>
